@@ -1,0 +1,3 @@
+name = Form Options Attributes
+description = Allows form options for select elements to have individual attributes.
+core = 7.x
