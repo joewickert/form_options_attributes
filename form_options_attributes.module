@@ -103,8 +103,12 @@ function form_options_attributes_form_select_options($element, $choices = NULL) 
 function form_options_attributes_form_process_option_attributes($element) {
   foreach (element_children($element) as $key) {
     if (!empty($element['#options_attributes'][$key])) {
-
-      $element[$key]['#attributes'] += $element['#options_attributes'][$key];
+      if (!empty($element[$key]['#attributes'][$key]) && is_array($element[$key]['#attributes'][$key])) {
+        $element[$key]['#attributes'] = array_merge($element[$key]['#attributes'], $element['#options_attributes'][$key]);
+      }
+      else { 
+        $element[$key]['#attributes'] = $element['#options_attributes'][$key];
+      }
     }
   }
   return $element;
