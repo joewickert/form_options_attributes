@@ -71,11 +71,11 @@ function form_options_attributes_form_select_options($element, $choices = NULL) 
   foreach ($choices as $key => $choice) {
     if (is_array($choice)) {
       $options .= '<optgroup label="' . check_plain($key) . '">';
-      $options .= form_select_options($element, $choice);
+      $options .= form_options_attributes_form_select_options($element, $choice);
       $options .= '</optgroup>';
     }
     elseif (is_object($choice)) {
-      $options .= form_select_options($element, $choice->option);
+      $options .= form_options_attributes_form_select_options($element, $choice->option);
     }
     else {
       $key = (string) $key;
