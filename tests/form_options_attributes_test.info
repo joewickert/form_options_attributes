@@ -1,0 +1,5 @@
+name = Form Options Attributes Test
+description = For testing Form Options Attributes
+core = 7.x
+dependencies[] = form_options_attributes
+hidden = TRUE

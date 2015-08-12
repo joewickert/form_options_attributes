@@ -1,3 +1,4 @@
 name = Form Options Attributes
 description = Allows form options for select elements to have individual attributes.
 core = 7.x
+files[] = tests/form_options_attributes.test
