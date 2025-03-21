@@ -20,29 +20,29 @@ in the #options_attributes array are formatted like the main #attributes array.
 
 Example:
 
-$form['states'] = array(
-  '#type' => 'select',
-  '#title' => t('States'),
-  '#options' => array(
-    'AL' => t('Alabama'),
-    'AK' => t('Alaska'),
-    'AZ' => t('Arizona'),
-    'AR' => t('Arkansas'),
-    // ...
-    'WI' => t('Wisconsin'),
-    'WY' => t('Wyoming'),
-  ),
-  '#options_attributes' => array(
-    'AL' => array('class' => array('southeast'), 'data-bbq-meat' => 'pork'),
-    'AK' => array('class' => array('non-contiguous'), 'data-bbq-meat' => 'crab'),
-    'AZ' => array('class' => array('southwest'), 'data-bbq-meat' => 'rattlesnake'),
-    'AR' => array('class' => array('south'), 'data-bbq-meat' => 'beef'),
-    // ...
-    'WI' => array('class' => array('midwest'), 'data-bbq-meat' => 'cheese'),
-    'WY' => array('class' => array('flyover'), 'data-bbq-meat' => 'bison'),
-  ),
-  '#attributes' => array('class' => array('states-bbq-selector')),
-);
+    $form['states'] = array(
+    '#type' => 'select',
+    '#title' => t('States'),
+    '#options' => array(
+        'AL' => t('Alabama'),
+        'AK' => t('Alaska'),
+        'AZ' => t('Arizona'),
+        'AR' => t('Arkansas'),
+        // ...
+        'WI' => t('Wisconsin'),
+        'WY' => t('Wyoming'),
+    ),
+    '#options_attributes' => array(
+        'AL' => array('class' => array('southeast'), 'data-bbq-meat' => 'pork'),
+        'AK' => array('class' => array('non-contiguous'), 'data-bbq-meat' => 'crab'),
+        'AZ' => array('class' => array('southwest'), 'data-bbq-meat' => 'rattlesnake'),
+        'AR' => array('class' => array('south'), 'data-bbq-meat' => 'beef'),
+        // ...
+        'WI' => array('class' => array('midwest'), 'data-bbq-meat' => 'cheese'),
+        'WY' => array('class' => array('flyover'), 'data-bbq-meat' => 'bison'),
+    ),
+    '#attributes' => array('class' => array('states-bbq-selector')),
+    );
 
 Installation
 ------------
