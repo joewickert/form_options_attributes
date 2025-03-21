@@ -7,14 +7,14 @@
 /**
  * Implements hook_theme_registry_alter().
  */
-function form_options_attributes_theme_registry_alter(&$theme_registry) {
+function form_options_attributes_theme_registry_alter($theme_registry) {
   $theme_registry['select']['function'] = 'form_options_attributes_select';
 }
 
 /**
  * Implements hook_element_info_alter().
  */
-function form_options_attributes_element_info_alter(&$elements) {
+function form_options_attributes_element_info_alter($elements) {
   $elements['checkboxes']['#process'][] = 'form_options_attributes_form_process_option_attributes';
   $elements['radios']['#process'][] = 'form_options_attributes_form_process_option_attributes';
 }
@@ -41,7 +41,7 @@ function form_options_attributes_select($variables) {
   element_set_attributes($element, array('id', 'name', 'size'));
   _form_set_class($element, array('form-select'));
 
-  return '<select' . drupal_attributes($element['#attributes']) . '>' . form_options_attributes_form_select_options($element) . '</select>';
+  return '<select' . backdrop_attributes($element['#attributes']) . '>' . form_options_attributes_form_select_options($element) . '</select>';
 }
 
 /**
@@ -64,7 +64,9 @@ function form_options_attributes_form_select_options($element, $choices = NULL) 
     $choices = $element['#options'];
   }
   // array_key_exists() accommodates the rare event where $element['#value'] is NULL.
+
   // isset() fails in this situation.
+
   $value_valid = isset($element['#value']) || array_key_exists('#value', $element);
   $value_is_array = $value_valid && is_array($element['#value']);
   $options = '';
@@ -86,12 +88,12 @@ function form_options_attributes_form_select_options($element, $choices = NULL) 
         $selected = '';
       }
       if (!empty($element['#options_attributes'][$key])) {
-        $options_attributes = ' ' . drupal_attributes($element['#options_attributes'][$key]);
+        $options_attributes = ' ' . backdrop_attributes($element['#options_attributes'][$key]);
       }
       else {
         $options_attributes = '';
       }
-      $options .= '<option value="'. check_plain($key) .'"' . $selected . $options_attributes .'>'. check_plain($choice).'</option>';
+      $options .= '<option value="' . check_plain($key) . '"' . $selected . $options_attributes . '>' . check_plain($choice) . '</option>';
     }
   }
   return $options;
@@ -106,7 +108,7 @@ function form_options_attributes_form_process_option_attributes($element) {
       if (!empty($element[$key]['#attributes'][$key]) && is_array($element[$key]['#attributes'][$key])) {
         $element[$key]['#attributes'] = array_merge($element[$key]['#attributes'], $element['#options_attributes'][$key]);
       }
-      else { 
+      else {
         $element[$key]['#attributes'] = $element['#options_attributes'][$key];
       }
     }

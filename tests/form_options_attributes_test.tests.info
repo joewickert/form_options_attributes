@@ -1,0 +1,6 @@
+[FormOptionsAttributesSelectTestCase]
+name = Element tests
+description = Tests form options attributes with the select, radios, and checkboxes element.
+group = Form Options Attributes
+file = form_options_attributes.test
+
