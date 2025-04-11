@@ -7,14 +7,30 @@
 /**
  * Implements hook_theme_registry_alter().
  */
-function form_options_attributes_theme_registry_alter($theme_registry) {
+function form_options_attributes_theme_registry_alter(&$theme_registry) {
+  // Change to properly override the theme function
+  $theme_registry['select']['theme path'] = backdrop_get_path('module', 'form_options_attributes');
   $theme_registry['select']['function'] = 'form_options_attributes_select';
+  $theme_registry['select']['type'] = 'module';
+}
+
+/**
+ * Implements hook_theme().
+ */
+function form_options_attributes_theme() {
+  return array(
+    'select' => array(
+      'render element' => 'element',
+    ),
+  );
 }
 
 /**
  * Implements hook_element_info_alter().
  */
-function form_options_attributes_element_info_alter($elements) {
+function form_options_attributes_element_info_alter(&$elements) {
+  // Add process callback for select elements too
+  $elements['select']['#process'][] = 'form_options_attributes_form_process_option_attributes';
   $elements['checkboxes']['#process'][] = 'form_options_attributes_form_process_option_attributes';
   $elements['radios']['#process'][] = 'form_options_attributes_form_process_option_attributes';
 }
@@ -37,6 +53,7 @@ function form_options_attributes_element_info_alter($elements) {
  * @ingroup themeable
  */
 function form_options_attributes_select($variables) {
+  
   $element = $variables['element'];
   element_set_attributes($element, array('id', 'name', 'size'));
   _form_set_class($element, array('form-select'));
@@ -60,12 +77,10 @@ function form_options_attributes_select($variables) {
  *   An HTML string of options for the select form element.
  */
 function form_options_attributes_form_select_options($element, $choices = NULL) {
+  
   if (!isset($choices)) {
     $choices = $element['#options'];
   }
-  // array_key_exists() accommodates the rare event where $element['#value'] is NULL.
-
-  // isset() fails in this situation.
 
   $value_valid = isset($element['#value']) || array_key_exists('#value', $element);
   $value_is_array = $value_valid && is_array($element['#value']);
@@ -87,7 +102,8 @@ function form_options_attributes_form_select_options($element, $choices = NULL) 
       else {
         $selected = '';
       }
-      if (!empty($element['#options_attributes'][$key])) {
+      // Check if options_attributes exists before trying to use it
+      if (isset($element['#options_attributes']) && !empty($element['#options_attributes'][$key])) {
         $options_attributes = ' ' . backdrop_attributes($element['#options_attributes'][$key]);
       }
       else {
@@ -103,15 +119,25 @@ function form_options_attributes_form_select_options($element, $choices = NULL) 
  * Processes a checkboxes or radios form element to add options_attributes.
  */
 function form_options_attributes_form_process_option_attributes($element) {
-  foreach (element_children($element) as $key) {
-    if (!empty($element['#options_attributes'][$key])) {
-      if (!empty($element[$key]['#attributes'][$key]) && is_array($element[$key]['#attributes'][$key])) {
-        $element[$key]['#attributes'] = array_merge($element[$key]['#attributes'], $element['#options_attributes'][$key]);
-      }
-      else {
-        $element[$key]['#attributes'] = $element['#options_attributes'][$key];
+  
+  if (!empty($element['#options_attributes'])) {
+    foreach ($element['#options_attributes'] as $key => $attributes) {
+      if (isset($element[$key])) {
+        // Initialize #attributes array if it doesn't exist
+        if (!isset($element[$key]['#attributes'])) {
+          $element[$key]['#attributes'] = array();
+        }
+        
+        // Ensure attributes are properly structured
+        foreach ($attributes as $attribute_key => $attribute_value) {
+          if ($attribute_key === 'class' && !is_array($attribute_value)) {
+            $attribute_value = array($attribute_value);
+          }
+          $element[$key]['#attributes'][$attribute_key] = $attribute_value;
+        }
       }
     }
   }
+  
   return $element;
 }
