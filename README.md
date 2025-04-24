@@ -2,7 +2,7 @@ Form Options Attributes Module
 =============================
 
 This module adds the ability to specify attributes for individual options
-on Drupal Form API elements of the types select, checkboxes, and radios.
+on Bacdrop CMS Form API elements of the types select, checkboxes, and radios.
 
 This is an API module, with no user interface. You would only need this
 module if another module you are using requires it or if you are programming
